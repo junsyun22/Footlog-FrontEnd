@@ -92,7 +92,7 @@ input:focus {
     justify-content: space-between;
 }
 
-.edit-btn, .delete-btn {
+.edit-btn, .delete-btn, .join-btn, .leave-btn, .back-btn{
     margin-top: 30px;
     padding: 10px 50px;
     border: none;
@@ -108,5 +108,20 @@ input:focus {
 
 .delete-btn {
     background-color: #f44336;
+    color: white;
+}
+
+.join-btn {
+    background-color:  rgb(92, 196, 157);
+    color: white;
+}
+
+.leave-btn{
+    background-color: #f44336;
+    color: white;
+}
+
+.back-btn{
+    background-color:  rgb(92, 196, 157);
     color: white;
 }

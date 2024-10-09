@@ -9,7 +9,8 @@ function ClubDetail() {
     const { club, setClub } = useClubStore();  // Zustand에서 club 상태 및 setter 불러오기
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
-
+    const [hasPermission, setHasPermission] = useState(false);  // 권한 확인 상태 추가
+    const [isMember, setIsMember] = useState(false);  // 이미 구단원인지 여부
 
     // 영어 enum 값을 한글로 변환하는 매핑 객체
     const reverseLevelMap = {
@@ -35,8 +36,37 @@ function ClubDetail() {
                 throw new Error('구단 정보를 가져오지 못했습니다.');
             }
 
-            const data = await response.json();
-            setClub(data);  // Zustand 상태에 저장
+            const text = await response.text(); // JSON으로 파싱하기 전에 텍스트로 받아봄
+
+            if (text) {
+                const data = JSON.parse(text); // 비어있지 않으면 JSON으로 파싱
+                setClub(data);  // Zustand 상태에 저장
+                
+                // 사용자가 구단원인지 확인하는 API 호출
+                const memberResponse = await fetch(`http://localhost:8080/api/club-members/${clubId}/is-member`, {
+                    method: 'GET',
+                    credentials: 'include',
+                });
+
+                if (memberResponse.ok) {
+                    const memberData = await memberResponse.json();
+                    setIsMember(memberData.isMember);  // 구단원 여부 업데이트
+                }
+
+                // 권한 확인 (구단주 혹은 매니저 권한)
+                const permissionResponse = await fetch(`http://localhost:8080/api/club-members/${clubId}/permissions`, {
+                    method: 'GET',
+                    credentials: 'include',
+                });
+
+                if (permissionResponse.ok) {
+                    const permissionData = await permissionResponse.json();
+                    setHasPermission(permissionData.hasPermission);  // 권한 여부 업데이트
+                }
+            } else {
+                throw new Error('서버에서 빈 응답이 반환되었습니다.');
+            }
+
             setLoading(false);
         } catch (error) {
             console.error(error);
@@ -45,8 +75,53 @@ function ClubDetail() {
         }
     };
 
+    // 구단 가입 핸들러
+    const handleJoinClub = async () => {
+        try {
+            const response = await fetch(`http://localhost:8080/api/club-members/${clubId}/join`, {
+                method: 'POST',
+                credentials: 'include',
+            });
 
+            if (response.status === 409) {
+                // 이미 구단에 가입한 경우의 에러 처리
+                alert('이미 이 구단에 가입하셨습니다.');
+            } else if (response.ok) {
+                alert('구단 가입이 완료되었습니다.');
+                setIsMember(true);  // 가입 성공 후 구단원 상태로 업데이트
+            } else {
+                // 서버에서 반환된 오류 메시지를 읽어와서 출력
+                const errorData = await response.json();
+                console.error('Error:', errorData);
+                alert(`구단 가입에 실패했습니다. 사유: ${errorData.message}`);
+            }
+        } catch (error) {
+            console.error('구단 가입 중 오류가 발생했습니다.', error);
+            alert('구단 가입 중 오류가 발생했습니다.');
+        }
+    };
 
+    // 구단 탈퇴 핸들러
+    const handleLeaveClub = async () => {
+        try {
+            const response = await fetch(`http://localhost:8080/api/club-members/${clubId}/leave`, {
+                method: 'DELETE',
+                credentials: 'include',
+            });
+
+            if (response.ok) {
+                alert('구단 탈퇴가 완료되었습니다.');
+                setIsMember(false);  // 탈퇴 후 구단원 상태 업데이트
+            } else {
+                const errorData = await response.json();
+                console.error('Error:', errorData);
+                alert(`구단 탈퇴에 실패했습니다. 사유: ${errorData.message}`);
+            }
+        } catch (error) {
+            console.error('구단 탈퇴 중 오류가 발생했습니다.', error);
+            alert('구단 탈퇴 중 오류가 발생했습니다.');
+        }
+    };
 
     // 권한이 없는 경우 경고 메시지를 표시하는 함수
     const handleAuthorizationError = (action) => {
@@ -64,7 +139,6 @@ function ClubDetail() {
                 });
 
                 if (response.status === 403) {
-                    // 권한이 없을 때 경고 메시지
                     handleAuthorizationError('삭제');
                 } else if (response.ok) {
                     alert('구단이 삭제되었습니다.');
@@ -82,13 +156,11 @@ function ClubDetail() {
     // 수정 핸들러
     const handleEdit = () => {
         try {
-            // 수정 권한 확인을 위해 별도의 API를 호출하거나 권한이 필요한 동작을 시도
             fetch(`http://localhost:8080/api/clubs/${clubId}/edit-check`, {
                 method: 'GET',
                 credentials: 'include',
             }).then((response) => {
                 if (response.status === 403) {
-                    // 권한이 없을 때 경고 메시지
                     handleAuthorizationError('수정');
                 } else if (response.ok) {
                     navigate(`/clubs/edit/${clubId}`);
@@ -109,7 +181,7 @@ function ClubDetail() {
         return date.toLocaleDateString('ko-KR', options);
     };
 
-   // 컴포넌트가 처음 마운트될 때 구단 정보 로드
+    // 컴포넌트가 처음 마운트될 때 구단 정보 로드
     useEffect(() => {
         fetchClubDetail();
     }, [clubId]);
@@ -129,7 +201,7 @@ function ClubDetail() {
 
             <div className={styles['club-info']}>
                 <p><strong>구단 코드:</strong> {club?.clubCode || '정보 없음'}</p>
-                <p><strong>등록일:</strong> {club?.createdAt ? formatDate(club.createdAt) : '정보 없음'}</p> {/* 등록일을 createdAt으로 수정 */}
+                <p><strong>등록일:</strong> {club?.createdAt ? formatDate(club.createdAt) : '정보 없음'}</p>
                 <p><strong>주 활동구장:</strong> {club?.stadiumName || '정보 없음'}</p>
                 <p><strong>도시:</strong> {club?.city || '정보 없음'}</p>
                 <p><strong>지역:</strong> {club?.region || '정보 없음'}</p>
@@ -139,8 +211,19 @@ function ClubDetail() {
             </div>
 
             <div className={styles['club-actions']}>
-                <button className={styles['edit-btn']} onClick={handleEdit}>수정</button>
-                <button className={styles['delete-btn']} onClick={handleDelete}>삭제</button>
+                {!isMember && (
+                    <button className={styles['join-btn']} onClick={handleJoinClub}>구단 가입</button>
+                )}
+                {isMember && !hasPermission && (
+                    <button className={styles['leave-btn']} onClick={handleLeaveClub}>구단 탈퇴</button>  
+                )}
+                {hasPermission && (
+                    <>
+                        <button className={styles['edit-btn']} onClick={handleEdit}>수정</button>
+                        <button className={styles['delete-btn']} onClick={handleDelete}>삭제</button>
+                    </>
+                )}
+                <button className={styles['back-btn']} onClick={() => navigate(-1)}>뒤로 가기</button> {/* 뒤로 가기 버튼 추가 */}
             </div>
         </div>
     );
