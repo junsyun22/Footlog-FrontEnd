@@ -52,7 +52,7 @@ p {
 }
 
 .login-services li {
-  margin: 2.5vh 0;
+  margin: 2.5vh 0 2.5vh 6vh;
   font-size: 1rem; /* vw 대신 rem 단위로 설정하여 글자 크기 고정 */
   max-width: 100%; /* 텍스트 최대 너비 설정 */
 }

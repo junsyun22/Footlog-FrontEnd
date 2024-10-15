@@ -1,10 +1,7 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useState, useCallback } from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
-
 import './Login.css';
 import KakaoLoginButton from '@/components/ui/KakaoLoginButton';
-
-
 import styled from '@emotion/styled';
 import checkIcon from '@/assets/check-button.svg';
 import mascotIcon from '@/assets/mascot.svg';
@@ -75,28 +72,46 @@ const Login = () => {
   const location = useLocation();
   const [isLoading, setIsLoading] = useState(true);
 
+  // 백엔드로 인가 코드를 전달하여 엑세스 토큰을 받아오는 함수
+  const exchangeCodeForToken = useCallback(async (code) => {
+    try {
+      // GET 요청으로 인가 코드를 백엔드에 전달
+      const response = await fetch(`http://localhost:8080/api/auth/kakao/login?code=${code}`, {
+        method: 'GET',
+        credentials: 'include'  // 쿠키 포함해서 요청
+      });
+      
+      // JSON 응답에서 토큰 정보 추출
+      const data = await response.json();
+
+      // 엑세스 토큰을 로컬 스토리지에 저장
+      localStorage.setItem('accessToken', data.accessToken);
+
+      // /match 페이지로 리다이렉트
+      navigate('/match');
+    } catch (error) {
+      console.error('토큰 교환 실패:', error);
+      setIsLoading(false);
+    }
+  }, [navigate]);
+
+  // 카카오에서 받은 인가 코드를 확인하고 백엔드로 전달
   useEffect(() => {
     const code = new URLSearchParams(location.search).get('code');
     if (code) {
+      // 인가 코드가 있으면 백엔드로 전송
       exchangeCodeForToken(code);
     } else {
+      // 인가 코드가 없으면 토큰 발급 요청을 하지 않고 로딩 중지
       setIsLoading(false);
     }
-  }, [location]);
+  }, [location, exchangeCodeForToken]);
+  
+  
 
-  const exchangeCodeForToken = async (code) => {
-    try {
-      console.log("exchangeCodeForToken Called!")
-      // 토큰 교환 로직...
-      navigate('/match');
-    } catch (error) {
-      console.error('Failed to exchange code for token:', error.response ? error.response.data : error.message);
-      setIsLoading(false);
-    }
-  };
-
+   // 카카오 로그인 버튼 클릭 시 인증 요청
   const handleKakaoLogin = () => {
-    window.location.href = 'https://kauth.kakao.com/oauth/authorize?response_type=code&client_id=262c56061ee06d4004d2f9b94db133a4&redirect_uri=http://localhost:8080/api/auth/kakao/login';
+    window.location.href = 'https://kauth.kakao.com/oauth/authorize?response_type=code&client_id=262c56061ee06d4004d2f9b94db133a4&redirect_uri=http://localhost:3000/login';  // 클라이언트로 리다이렉트 설정
   };
   
   if (isLoading) {

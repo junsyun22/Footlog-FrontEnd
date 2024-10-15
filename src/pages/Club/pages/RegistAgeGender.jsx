@@ -35,7 +35,7 @@ function RegistAgeGender() {
 
     const handleSubmit = () => {
         setAgeGender(selectedAgeGroup, selectedGender); // zustand 상태 업데이트
-        navigate('/club/regist/skill-level'); // 다음 페이지로 이동
+        navigate('/club/regist/club-level'); // 다음 페이지로 이동
     };
 
     const goBack = () => {

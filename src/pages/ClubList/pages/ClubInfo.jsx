@@ -16,6 +16,15 @@ import logo10 from '../images/logo10.png';
 // 로고를 배열로 관리(임시)
 const logos = [logo1, logo2, logo3, logo4, logo5, logo6, logo7, logo8, logo9, logo10];
 
+// 영어 enum 값을 한글로 변환하는 매핑 객체
+const reverseLevelMap = {
+  'BEGINNER': '입문자',
+  'AMATEUR': '아마추어',
+  'SEMI_PRO': '세미프로',
+  'PRO': '프로',
+  'WORLD_CLASS': '월드클래스',
+};
+
 
 function ClubInfo({ club, onClick }) {
   const statusClass =
@@ -39,7 +48,7 @@ function ClubInfo({ club, onClick }) {
         <div className={clubStyle.subInfo}>
           <span>🏃 지역 : {club.city} * 🏠 홈구장 : {club.stadiumName}</span>  {/* 활동 지역 및 경기장 */}
           <span>👫 성별 : {club.gender} * 🙂 연령대 : {club.ageGroup}</span>  {/* 성별, 종목, 연령대 */}
-          <span>⏰ 활동 시간대 : {club.times} * 💪 실력 : {club.skillLevel}</span>  {/* 활동 시간대 및 실력 */}
+          <span>⏰ 활동 시간대 : {club.times} * 💪 실력 : {reverseLevelMap[club.clubLevel] || '정보 없음'}</span>  {/* 활동 시간대 및 실력 */}
         </div>
       </div>
     </div>

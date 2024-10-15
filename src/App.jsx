@@ -22,7 +22,7 @@ import ClubRegist from './pages/Club/pages/ClubRegist';
 import RegistSchedule from './pages/Club/pages/RegistSchedule';
 import RegistLocation from './pages/Club/pages/RegistLocation';
 import RegistAgeGender from './pages/Club/pages/RegistAgeGender';
-import RegistSkillLevel from './pages/Club/pages/RegistSkillLevel';
+import RegistClubLevel from './pages/Club/pages/RegistClubLevel';
 import RegistrationSuccess from './pages/Club/pages/RegistSuccess';
 import ClubDetail from './pages/Club/pages/ClubDetail';
 import ClubEdit from './pages/Club/pages/ClubEdit';
@@ -73,7 +73,7 @@ const App = () => {
             <Route exact path="/club/regist/schedule" element={<RegistSchedule />} />
             <Route exact path="/club/regist/location" element={<RegistLocation />} />
             <Route exact path="/club/regist/age-gender" element={<RegistAgeGender />} />
-            <Route exact path="/club/regist/skill-level" element={<RegistSkillLevel />} />
+            <Route exact path="/club/regist/club-level" element={<RegistClubLevel />} />
             <Route exact path="/club/regist/success" element={<RegistrationSuccess />} />
             <Route exact path="/club/detail/:clubId" element={<ClubDetail />} />
             <Route exact path="/clubs/edit/:clubId" element={<ClubEdit />} />

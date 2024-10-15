@@ -8,7 +8,7 @@ const initialState = {
   schedule: { days: [], times: [] },
   location: { stadiumName: '', city: '', region: '' },
   ageGender: { ageGroup: '', gender: '' },
-  skillLevel: { level: '', gauge: 0 },
+  clubLevel: { level: '', gauge: 0 },
 };
 
 const useClubStore = create((set) => ({
@@ -40,9 +40,9 @@ const useClubStore = create((set) => ({
       }
   },
 
-  setSkillLevel: (level, gauge) => {
+  setClubLevel: (level, gauge) => {
       if (level && typeof gauge === 'number') {
-          set({ skillLevel: { level, gauge } });
+          set({ clubLevel: { level, gauge } });
       }
   },
 
