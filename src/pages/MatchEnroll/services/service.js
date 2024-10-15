@@ -1,16 +1,15 @@
 const SERVER_URL = 'http://localhost:8080';
-const MATCH_ENDPOINT = '/api/v1/matches';
+const CLUB_INFO_ENDPOINT = '/api/club-members/my';
 
-export async function postMatchEnroll(data) {
-  const url = SERVER_URL.concat(MATCH_ENDPOINT);
+export async function getMyClubList() {
+  const url = SERVER_URL.concat(CLUB_INFO_ENDPOINT);
   try {
     const response = await fetch(url, {
-      method: 'POST',
+      method: 'GET',
       headers: {
         'Content-Type': 'application/json',
       },
       credentials: 'include',
-      body: JSON.stringify(data),
     });
 
     if (!response.ok) {
