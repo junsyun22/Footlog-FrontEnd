@@ -1,10 +1,7 @@
 import { useEffect, useState, useCallback } from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
-
 import './Login.css';
 import KakaoLoginButton from '@/components/ui/KakaoLoginButton';
-
-
 import styled from '@emotion/styled';
 import checkIcon from '@/assets/check-button.svg';
 import mascotIcon from '@/assets/mascot.svg';
@@ -77,7 +74,6 @@ const Login = () => {
 
   // 백엔드로 인가 코드를 전달하여 엑세스 토큰을 받아오는 함수
   const exchangeCodeForToken = useCallback(async (code) => {
-    console.log("토큰 교환 함수가 호출되었습니다!");
     try {
       // GET 요청으로 인가 코드를 백엔드에 전달
       const response = await fetch(`http://localhost:8080/api/auth/kakao/login?code=${code}`, {
@@ -105,11 +101,9 @@ const Login = () => {
     if (code) {
       // 인가 코드가 있으면 백엔드로 전송
       exchangeCodeForToken(code);
-      console.log('인가 코드가 유효합니다. 토큰 발급을 진행합니다.');
     } else {
       // 인가 코드가 없으면 토큰 발급 요청을 하지 않고 로딩 중지
       setIsLoading(false);
-      console.log('인가 코드가 없습니다. 토큰 발급을 진행할 수 없습니다.');
     }
   }, [location, exchangeCodeForToken]);
   

@@ -2,6 +2,7 @@ import useClubStore from '@/hooks/useClubStore'; // zustand store import
 import { useState, useEffect } from 'react';
 import styles from './ClubRegist.module.css'; // 외부 CSS 파일로 스타일을 관리.
 import { useNavigate } from 'react-router-dom'; // 페이지 이동을 위한 useNavigate 사용
+import api from '@/config/axiosConfig';  // api 대신 axiosConfig를 직접 import
 
 function ClubRegist() {
   const navigate = useNavigate(); // 페이지 이동을 위한 훅
@@ -29,13 +30,8 @@ function ClubRegist() {
   // 서버 중복 확인 함수 (구단 이름)
   const checkNameDuplicate = async () => {
     try {
-      const response = await fetch(`http://localhost:8080/api/clubs/check-name?name=${name}`, {
-        method: 'GET',
-        headers: { 'Content-Type': 'application/json' },
-        credentials: 'include',
-      });
-      const data = await response.json();
-      if (data === true) {
+      const response = await api.get(`/api/clubs/check-name?name=${name}`);
+      if (response.data === true) {
         setNameError('이미 사용 중인 구단 이름입니다.');
         setNameValid(false);
       } else {
@@ -52,13 +48,8 @@ function ClubRegist() {
   // 서버 중복 확인 함수 (구단 코드)
   const checkCodeDuplicate = async () => {
     try {
-      const response = await fetch(`http://localhost:8080/api/clubs/check-code?code=${code}`, {
-        method: 'GET',
-        headers: { 'Content-Type': 'application/json' },
-        credentials: 'include',
-      });
-      const data = await response.json();
-      if (data === true) {
+      const response = await api.get(`/api/clubs/check-code?code=${code}`);
+      if (response.data === true) {
         setCodeError('이미 사용 중인 구단 코드입니다.');
         setCodeValid(false);
       } else {

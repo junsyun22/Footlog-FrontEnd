@@ -2,6 +2,7 @@ import { useState, useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import useClubStore from '@/hooks/useClubStore';  // Zustand 훅
 import styles from './ClubRegist.module.css'; // 외부 CSS 파일로 스타일을 관리.
+import api from '@/config/axiosConfig'; // axios 인스턴스
 
 function ClubEdit() {
     const { clubId } = useParams();  // URL 파라미터에서 clubId 추출
@@ -20,21 +21,21 @@ function ClubEdit() {
     const [error, setError] = useState(null);
 
     // 백엔드 enum 값과 프론트 표시 값을 매핑하는 객체
-const levelMap = {
-    BEGINNER: '입문자',
-    AMATEUR: '아마추어',
-    SEMI_PRO: '세미프로',
-    PRO: '프로',
-    WORLD_CLASS: '월드클래스',
-};
+    const levelMap = {
+        BEGINNER: '입문자',
+        AMATEUR: '아마추어',
+        SEMI_PRO: '세미프로',
+        PRO: '프로',
+        WORLD_CLASS: '월드클래스',
+    };
 
-const reverseLevelMap = {
-    '입문자': 'BEGINNER',
-    '아마추어': 'AMATEUR',
-    '세미프로': 'SEMI_PRO',
-    '프로': 'PRO',
-    '월드클래스': 'WORLD_CLASS',
-};
+    const reverseLevelMap = {
+        '입문자': 'BEGINNER',
+        '아마추어': 'AMATEUR',
+        '세미프로': 'SEMI_PRO',
+        '프로': 'PRO',
+        '월드클래스': 'WORLD_CLASS',
+    };
 
     const levels = ['입문자', '아마추어', '세미프로', '프로', '월드클래스'];
     const days = ['월', '화', '수', '목', '금', '토', '일'];
@@ -54,19 +55,8 @@ const reverseLevelMap = {
     // 클럽 상세 정보를 가져오는 함수
     const fetchClubDetail = async () => {
         try {
-            const response = await fetch(`http://localhost:8080/api/clubs/${clubId}`, {
-                method: 'GET',
-                headers: {
-                    'Content-Type': 'application/json',
-                },
-                credentials: 'include',
-            });
-            
-            if (!response.ok) {
-                throw new Error('구단 정보를 가져오지 못했습니다.');
-            }
-
-            const data = await response.json();
+            const response = await api.get(`/api/clubs/${clubId}`);
+            const data = response.data;
             setClub(data);  // Zustand 상태에 저장
             setClubName(data.clubName);
             setClubIntroduction(data.clubIntroduction);
@@ -104,21 +94,14 @@ const reverseLevelMap = {
         };
 
         try {
-            const response = await fetch(`http://localhost:8080/api/clubs/${clubId}`, {
-                method: 'PUT',
-                headers: {
-                    'Content-Type': 'application/json',
-                },
-                credentials: 'include',
-                body: JSON.stringify(updatedClub),
-            });
+            const response = await api.put(`/api/clubs/${clubId}`, updatedClub);
 
-            if (!response.ok) {
+            if (response.status === 200) {
+                alert('구단 정보가 성공적으로 수정되었습니다.');
+                navigate(`/club/detail/${clubId}`);  // 수정 후 상세 페이지로 이동
+            } else {
                 throw new Error('구단 정보를 수정하는 데 실패했습니다.');
             }
-
-            alert('구단 정보가 성공적으로 수정되었습니다.');
-            navigate(`/club/detail/${clubId}`);  // 수정 후 상세 페이지로 이동
         } catch (error) {
             console.error(error);
             alert('구단 정보를 수정하는 중 오류가 발생했습니다.');
