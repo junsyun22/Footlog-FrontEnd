@@ -73,6 +73,26 @@ export function SelectField({ id, label, options, register, error }) {
   );
 }
 
+export function ObjectSelectField({ id, label, options, register, error }) {
+  console.log(options);
+  return (
+    <InputLabel htmlFor={id}>
+      {label}
+      <Select id={id} {...register}>
+        <option value="" disabled>
+          {`Select ${label}`}
+        </option>
+        {options.map((option) => (
+          <option key={option.clubId} value={option.clubId}>
+            {option.clubName}
+          </option>
+        ))}
+      </Select>
+      {error && <ErrorMessage>{error}</ErrorMessage>}
+    </InputLabel>
+  );
+}
+
 export function CheckboxField({ label, register }) {
   return (
     <InputLabel>
