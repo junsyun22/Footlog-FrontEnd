@@ -49,21 +49,29 @@ function ClubDetail() {
       const { data } = await api.get(`/api/clubs/${clubId}`);
       setClub(data);
 
-      const memberResponse = await api.get(`/api/club-members/${clubId}/is-member`);
-      setIsMember(memberResponse.data.isMember);
+      // 구단원 여부 확인
+      try {
+        const memberResponse = await api.get(`/api/club-members/${clubId}/is-member`);
+        setIsMember(memberResponse.data.isMember);
+      } catch (memberError) {
+        console.warn("구단원이 아닌 사용자입니다.");
+        setIsMember(false); // 구단원이 아니더라도 화면을 보여주기 위해 false로 설정
+      }
 
-      const permissionResponse = await api.get(`/api/club-members/${clubId}/permissions`);
-      setHasPermission(permissionResponse.data.hasPermission);
+      // 권한 여부 확인
+      try {
+        const permissionResponse = await api.get(`/api/club-members/${clubId}/permissions`);
+        setHasPermission(permissionResponse.data.hasPermission);
+      } catch (permissionError) {
+        console.warn("권한이 없는 사용자입니다.");
+        setHasPermission(false); // 권한이 없더라도 정보는 보여주기 위해 false로 설정
+      }
 
       setLoading(false);
     } catch (error) {
-      console.error('구단 정보를 가져오는 중 오류:', error);
-      setError('구단 정보를 가져오는 중 오류가 발생했습니다.');
+      console.error("구단 정보를 가져오는 중 오류:", error);
+      setError("구단 정보를 가져오는 중 오류가 발생했습니다.");
       setLoading(false);
-      if (error.response?.status === 401) {
-        localStorage.removeItem('accessToken');
-        window.location.href = '/login';
-      }
     }
   };
 
