@@ -82,11 +82,12 @@ function MatchEnrollForm() {
   useEffect(() => {
     const getClubList = async () => {
       const response = await fetch(
-        'http://localhost:8080/api/club-members/my',
+        'http://localhost:8080/api/clubs/my-clubs',
         {
           method: 'GET',
           headers: {
             'Content-Type': 'application/json',
+            'Authorization': `Bearer ${localStorage.getItem('accessToken')}`
           },
           credentials: 'include',
         }
@@ -179,7 +180,7 @@ function MatchEnrollForm() {
           error={errors.matchTitle?.message}
         />
         {clubList === null ? (
-          <>1</>
+          <>가입한 클럽 정보가 없습니다</>
         ) : (
           <ObjectSelectField
             id="myClub"
@@ -313,9 +314,8 @@ function MatchEnrollForm() {
           label="선수출신이 있나요?"
           register={register('isPro')}
         />
-        <Button type="submit">경기등록하기.</Button>
+        <Button type="submit">경기등록하기</Button>
       </form>
-      <Button onClick={() => console.log(clubList)}>클럽정보 확인하기</Button>
     </FormContainer>
   );
 }

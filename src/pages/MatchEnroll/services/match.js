@@ -8,6 +8,7 @@ export async function postMatchEnroll(data) {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
+        'Authorization': `Bearer ${localStorage.getItem('accessToken')}`
       },
       credentials: 'include',
       body: JSON.stringify(data),
