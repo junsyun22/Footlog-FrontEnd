@@ -11,7 +11,8 @@ import AppContainer from './components/layout/AppContainer/AppContainer';
 // Page components
 import Landing from './pages/Landing';
 import Login from './pages/Login/Login';
-import Match from './pages/Match/Match';
+// import Match from './pages/Match/Match';
+import MatchListPage from './pages/MatchEnroll/MatchListPage';
 import MatchDetail from './pages/Match/MatchDetail';
 import MatchEnrollForm from './pages/MatchEnroll/MatchEnrollForm';
 import ChatRoomListPage from './pages/Chat/ChatRoomListPage';
@@ -49,7 +50,8 @@ const App = () => {
             <Route path="/login" element={<Login />} />
             
             {/* Match related routes */}
-            <Route path="/match" element={<Match />} />
+            {/* <Route path="/match" element={<Match />} /> */}
+            <Route path="/match" element={<MatchListPage />} />
             <Route path="/match/:matchCode" element={<MatchDetail />} />
             <Route path="/match/enroll" element={<MatchEnrollForm />} />
             
