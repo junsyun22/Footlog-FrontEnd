@@ -1,6 +1,7 @@
 import { useNavigate } from 'react-router-dom';
 import ClubLevelBadge from './badge/ClubLevelBadge';
 import MatchStatusBadge from './badge/MatchStatusBadge';
+import { getCardBackgroundStyles } from '../utils';
 
 function MatchCard({ match }) {
   const navigate = useNavigate();
@@ -37,22 +38,6 @@ function MatchCard({ match }) {
     navigate(`/match/${matchId}`);
   };
 
-  const getCardBackgroundStyles = (status) => {
-    switch (status) {
-      case 'WAITING':
-        return 'bg-red-50 border border-red-200';
-      case 'PENDING':
-        return 'bg-yellow-50 border border-yellow-200';
-      case 'ACCEPTED':
-        return 'bg-green-50 border border-green-200';
-      case 'PLAYING':
-        return 'bg-blue-50 border border-blue-200';
-      case 'FINISHED':
-        return 'bg-gray-50 border border-gray-200';
-      default:
-        return 'bg-white';
-    }
-  };
   return (
     <div
       className={`max-w-[400px] w-full rounded overflow-hidden shadow-lg ${getCardBackgroundStyles(matchStatus)} mb-4 hover:cursor-pointer`}

@@ -35,7 +35,7 @@ function MatchListPage() {
   }
 
   return (
-    <div className="w-full flex flex-col items-center">
+    <div className="w-full flex flex-col items-center pb-20">
       <h2 className="font-bold text-2xl text-left">경기 목록 리스트</h2>
       {matches.map((match) => (
         <MatchCard key={match.matchId} match={match} />

@@ -81,17 +81,14 @@ function MatchEnrollForm() {
 
   useEffect(() => {
     const getClubList = async () => {
-      const response = await fetch(
-        'http://localhost:8080/api/clubs/my-clubs',
-        {
-          method: 'GET',
-          headers: {
-            'Content-Type': 'application/json',
-            'Authorization': `Bearer ${localStorage.getItem('accessToken')}`
-          },
-          credentials: 'include',
-        }
-      );
+      const response = await fetch('http://localhost:8080/api/clubs/my-clubs', {
+        method: 'GET',
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: `Bearer ${localStorage.getItem('accessToken')}`,
+        },
+        credentials: 'include',
+      });
 
       if (!response.ok) {
         throw new Error('안돼 ! 요청 잘못보냄');
@@ -119,7 +116,6 @@ function MatchEnrollForm() {
   };
 
   const onSubmit = async (data) => {
-    console.log(data);
     try {
       const requestData = {
         myClubId: 1,
