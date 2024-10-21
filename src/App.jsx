@@ -37,7 +37,10 @@ import Profile from './pages/Profile/Profile';
 import EnrollMercenaryApp from './pages/Mercenary/pages/EnrollMercenaryApp/EnrollMercenaryApp';
 import EnrollMercenaryRec from './pages/Mercenary/pages/EnrollMercenaryRec/EnrollMercenaryRec';
 
+// AskPage related components
 import AskRegist from './pages/Ask/AskRegist';
+import AskPage from './pages/Ask/AskPage';
+import AskAnswerPage from './pages/Ask/AskAnswerPage';
 
 const App = () => {
   return (
@@ -80,7 +83,9 @@ const App = () => {
             <Route exact path="/club/detail/:clubId" element={<ClubDetail />} />
             <Route exact path="/clubs/edit/:clubId" element={<ClubEdit />} />
 
-            <Route exact path="/ask/regist" element={<AskRegist />} />
+            <Route path="/ask/regist" element={<AskRegist />} />
+            <Route path="/ask" element={<AskPage />} />
+            <Route path='/ask/:id' element={<AskAnswerPage />} />
 
 
 
