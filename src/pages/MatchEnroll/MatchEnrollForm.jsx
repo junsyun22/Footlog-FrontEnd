@@ -1,12 +1,21 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import styled from '@emotion/styled';
 import { useForm } from 'react-hook-form';
 import { useNavigate } from 'react-router-dom';
 import { postMatchEnroll } from './services/match';
 import { FormContainer, Button } from './components/Basic';
-import { InputField, SelectField, CheckboxField } from './components/FormField';
+import {
+  InputField,
+  SelectField,
+  CheckboxField,
+  ObjectSelectField,
+} from './components/FormField';
 import KakaoMap from './components/KakaoMap';
-
+import {
+  calculateEndTime,
+  convertMatchGender,
+  convertPlayerQuantity,
+} from './utils';
 
 const SearchFieldLocation = styled.div`
   display: flex;
@@ -58,13 +67,39 @@ const SearchResultItem = styled.li`
 `;
 
 const PLAYER_COUNT_OPTIONS = ['11', '10', '9'];
-const MATCH_GENDER_OPTIONS = ['MALE', 'FEMALE', 'MIXED'];
+const MATCH_GENDER_OPTIONS = ['MALE', 'FEMALE', 'MIX'];
+const CLUB_LEVEL = ['입문자', '아마추어', '세미프로', '프로', '월드클래스'];
 
 function MatchEnrollForm() {
   const [fieldLocation, setFieldLocation] = useState('');
   const [mapData, setMapData] = useState(null);
   const [searchResults, setSearchResults] = useState([]);
+
   const navigate = useNavigate();
+
+  const [clubList, setClubList] = useState(null);
+
+  useEffect(() => {
+    const getClubList = async () => {
+      const response = await fetch('http://localhost:8080/api/clubs/my-clubs', {
+        method: 'GET',
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: `Bearer ${localStorage.getItem('accessToken')}`,
+        },
+        credentials: 'include',
+      });
+
+      if (!response.ok) {
+        throw new Error('안돼 ! 요청 잘못보냄');
+      }
+
+      const result = await response.json();
+
+      setClubList(result);
+    };
+    getClubList();
+  }, []);
 
   const {
     register,
@@ -82,13 +117,29 @@ function MatchEnrollForm() {
 
   const onSubmit = async (data) => {
     try {
-      await postMatchEnroll(data);
-      console.log(data);
-      // 성공적으로 등록되면 경기 목록 페이지로 이동
+      const requestData = {
+        myClubId: 1,
+        matchPhoto: '',
+        matchIntroduce: data.matchIntroduce,
+        matchDate: data.matchDate,
+        matchStartTime: data.matchStartTime,
+        matchEndTime: calculateEndTime(data.matchStartTime, data.matchTime),
+        matchPlayerQuantity: convertPlayerQuantity(data.matchPlayerQuantity),
+        quarterQuantity: data.quarterQuantity,
+        fieldLocation: data.fieldLocation,
+        matchCost: data.matchCost,
+        pro: data.isPro
+          ? { isPro: true, proQuantity: 1 }
+          : { isPro: false, proQuantity: 0 },
+        clubLevel: data.clubLevel,
+        matchGender: convertMatchGender(data.matchGender),
+        matchStatus: 'WAITING',
+      };
+
+      await postMatchEnroll(requestData);
       navigate('/match');
     } catch (error) {
       console.error('Failed to enroll match:', error);
-      // 에러 처리 로직 (예: 사용자에게 에러 메시지 표시)
     }
   };
 
@@ -124,24 +175,48 @@ function MatchEnrollForm() {
           })}
           error={errors.matchTitle?.message}
         />
+        {clubList === null ? (
+          <>가입한 클럽 정보가 없습니다</>
+        ) : (
+          <ObjectSelectField
+            id="myClub"
+            label="내 클럽정보"
+            options={clubList}
+            register={register('myClub', {
+              required: '클럽을 선택해주세요.',
+            })}
+            error={errors.myClub?.message}
+          />
+        )}
+
         <InputField
-          id="description"
+          id="matchIntroduce"
           label="경기소개"
           placeholder="경기를 소개해주세요."
-          register={register('description', {
+          register={register('matchIntroduce', {
             required: '경기를 소개해주세요.',
           })}
-          error={errors.description?.message}
+          error={errors.matchIntroduce?.message}
         />
         <InputField
-          id="matchDay"
+          id="matchDate"
           label="경기등록일"
           type="date"
-          register={register('matchDay', {
+          register={register('matchDate', {
             required: 'Date is required',
             validate: validateDate,
           })}
-          error={errors.matchDay?.message}
+          error={errors.matchDate?.message}
+        />
+        <InputField
+          id="matchStartTime"
+          label="경기시작시간"
+          type="time"
+          placeholder="시작 시간을 입력해주세요."
+          register={register('matchStartTime', {
+            required: 'Start Time is required',
+          })}
+          error={errors.matchStartTime?.message}
         />
         <InputField
           id="matchCost"
@@ -154,15 +229,26 @@ function MatchEnrollForm() {
           error={errors.matchCost?.message}
         />
         <InputField
-          id="playTime"
+          id="matchTime"
           label="경기시간"
           type="number"
           placeholder="경기 러닝타임을 입력해주세요."
-          register={register('playTime', {
+          register={register('matchTime', {
             required: 'playtime is required',
             min: 2,
           })}
-          error={errors.playTime?.message}
+          error={errors.matchTime?.message}
+        />
+        <InputField
+          id="quarterQuantity"
+          label="경기 쿼터수"
+          type="number"
+          placeholder="경기 쿼터수 입력해주세요."
+          register={register('quarterQuantity', {
+            required: '경기 쿼터수',
+            min: 2,
+          })}
+          error={errors.quarterQuantity?.message}
         />
         <SearchFieldLocation>
           <InputField
@@ -196,13 +282,13 @@ function MatchEnrollForm() {
         <KakaoMap mapData={mapData} />
 
         <SelectField
-          id="playerCount"
+          id="matchPlayerQuantity"
           label="몇 대 몇?"
           options={PLAYER_COUNT_OPTIONS}
-          register={register('playerCount', {
-            required: 'Please select the number of playerCount',
+          register={register('matchPlayerQuantity', {
+            required: 'Please select the number of matchPlayerQuantity',
           })}
-          error={errors.playerCount?.message}
+          error={errors.matchPlayerQuantity?.message}
         />
         <SelectField
           label="matchGender"
@@ -212,11 +298,19 @@ function MatchEnrollForm() {
           })}
           error={errors.matchGender?.message}
         />
+        <SelectField
+          label="clubLevel"
+          options={CLUB_LEVEL}
+          register={register('clubLevel', {
+            required: '팀 실력을 입력하세요.',
+          })}
+          error={errors.clubLevel?.message}
+        />
         <CheckboxField
           label="선수출신이 있나요?"
           register={register('isPro')}
         />
-        <Button type="submit">경기등록하기.</Button>
+        <Button type="submit">경기등록하기</Button>
       </form>
     </FormContainer>
   );
