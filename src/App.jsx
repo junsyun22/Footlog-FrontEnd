@@ -41,6 +41,8 @@ import EnrollMercenaryRec from './pages/Mercenary/pages/EnrollMercenaryRec/Enrol
 import AskRegist from './pages/Ask/AskRegist';
 import AskPage from './pages/Ask/AskPage';
 import AskAnswerPage from './pages/Ask/AskAnswerPage';
+import MyAskPage from './pages/Ask/MyAskPage';
+import AskDetailPage from './pages/Ask/AskDetailPage';
 
 const App = () => {
   return (
@@ -85,6 +87,8 @@ const App = () => {
 
             <Route path="/ask/regist" element={<AskRegist />} />
             <Route path="/ask" element={<AskPage />} />
+            <Route path='/ask/mypage/:userId' element={<MyAskPage />} />
+            <Route path='/ask/:id' element={<AskDetailPage />} />
             <Route path='/ask/answer/:id' element={<AskAnswerPage />} />
 
 
