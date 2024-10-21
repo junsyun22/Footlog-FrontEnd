@@ -85,7 +85,7 @@ const App = () => {
 
             <Route path="/ask/regist" element={<AskRegist />} />
             <Route path="/ask" element={<AskPage />} />
-            <Route path='/ask/:id' element={<AskAnswerPage />} />
+            <Route path='/ask/answer/:id' element={<AskAnswerPage />} />
 
 
 

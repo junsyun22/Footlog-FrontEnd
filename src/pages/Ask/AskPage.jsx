@@ -48,7 +48,7 @@ const AskPage = () => {
 
   // 문의 항목 클릭 시 답변 페이지로 이동
   const handleInquiryClick = (id) => {
-    navigate(`/answer/${id}`); // 문의 ID를 기반으로 답변 페이지로 이동
+    navigate(`ask/answer/${id}`); // 문의 ID를 기반으로 답변 페이지로 이동
   };
 
   return (
