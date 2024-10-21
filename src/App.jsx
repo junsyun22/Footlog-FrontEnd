@@ -37,6 +37,8 @@ import Profile from './pages/Profile/Profile';
 import EnrollMercenaryApp from './pages/Mercenary/pages/EnrollMercenaryApp/EnrollMercenaryApp';
 import EnrollMercenaryRec from './pages/Mercenary/pages/EnrollMercenaryRec/EnrollMercenaryRec';
 
+import AskRegist from './pages/Ask/AskRegist';
+
 const App = () => {
   return (
     <ThemeProvider theme={theme}>
@@ -77,6 +79,8 @@ const App = () => {
             <Route exact path="/club/regist/success" element={<RegistrationSuccess />} />
             <Route exact path="/club/detail/:clubId" element={<ClubDetail />} />
             <Route exact path="/clubs/edit/:clubId" element={<ClubEdit />} />
+
+            <Route exact path="/ask/regist" element={<AskRegist />} />
 
 
 
