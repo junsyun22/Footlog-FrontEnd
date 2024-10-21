@@ -1,0 +1,129 @@
+/* 전체 컨테이너 설정 */
+.container {
+    width: 100%;
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 20px;
+    background-color: #f4f7fa;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    box-sizing: border-box;
+    gap: 20px;
+  }
+  
+  /* 페이지 제목 스타일 */
+  .title {
+    font-size: 32px;
+    color: #333;
+    margin-bottom: 20px;
+    font-weight: bold;
+    text-align: center;
+  }
+  
+  /* 정렬 옵션 섹션 */
+  .sortOptions {
+    width: 100%;
+    max-width: 800px;
+    display: flex;
+    justify-content: flex-end;
+    margin-bottom: 20px;
+  }
+  
+  .sortLabel {
+    font-size: 16px;
+    margin-right: 10px;
+    color: #333;
+  }
+  
+  .select {
+    padding: 10px;
+    font-size: 16px;
+    border-radius: 5px;
+    border: 1px solid #ccc;
+    background-color: #fff;
+    cursor: pointer;
+  }
+  
+  /* 문의 항목 */
+  .inquiryItem {
+    width: 100%;
+    max-width: 800px;
+    background-color: #fff;
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    cursor: pointer;
+    border-left: 5px solid transparent; /* 기본 상태 */
+  }
+  
+  /* 문의 항목 호버 효과 */
+  .inquiryItem:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.15);
+  }
+  
+  /* 답변 완료된 문의 항목의 스타일 */
+  .answeredItem {
+    border-left-color: #28a745; /* 답변 완료 항목은 녹색 표시 */
+  }
+  
+  /* 문의 제목 및 날짜 */
+  .inquiryHeader {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 10px;
+  }
+  
+  .inquiryTitle {
+    font-size: 22px;
+    color: #007bff;
+    margin: 0;
+    font-weight: bold;
+  }
+  
+  .inquiryDate {
+    font-size: 14px;
+    color: #888;
+  }
+  
+  /* 카테고리 스타일 */
+  .inquiryCategory {
+    font-size: 16px;
+    font-weight: 500;
+    color: #555;
+    margin: 0;
+  }
+  
+  .inquiryMessage {
+    font-size: 16px;
+    color: #333;
+    line-height: 1.5;
+    margin: 0;
+  }
+  
+  .inquiryUserId {
+    font-size: 14px;
+    color: #888;
+  }
+  
+  /* 답변 상태 스타일 */
+  .inquiryStatus {
+    font-size: 14px;
+    font-weight: bold;
+    margin-top: 10px;
+  }
+  
+  .answered {
+    color: #28a745; /* 답변 완료 색상 (녹색) */
+  }
+  
+  .notAnswered {
+    color: #dc3545; /* 답변 대기 중 색상 (빨간색) */
+  }
+  
