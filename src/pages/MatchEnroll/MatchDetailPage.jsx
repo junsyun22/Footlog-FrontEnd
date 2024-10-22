@@ -37,7 +37,7 @@ function MatchDetailPage() {
 
   return (
     <div className="p-2">
-      <MatchDetailCard match={matchDetails} onApplyClick={handleApplyClick}/>
+      <MatchDetailCard match={matchDetails} onApplyClick={handleApplyClick} />
     </div>
   );
 }

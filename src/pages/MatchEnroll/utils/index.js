@@ -75,3 +75,12 @@ export const getCardBackgroundStyles = (status) => {
       return 'bg-white';
   }
 };
+
+// 당일예약 불가능
+export const validateDateAfterToday = (day) => {
+  const selectedDate = new Date(day);
+  const today = new Date();
+  selectedDate.setHours(0, 0, 0, 0);
+  today.setHours(0, 0, 0, 0);
+  return selectedDate > today || '등록일은 오늘 이후여야 합니다.';
+};

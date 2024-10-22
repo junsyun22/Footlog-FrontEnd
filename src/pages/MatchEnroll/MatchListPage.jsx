@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react';
 import MatchCard from './components/MatchCard';
 import EnrollMatchButton from './components/EnrollButton';
+import { getMatchList } from './services/match';
 
 function MatchListPage() {
   const [matches, setMatches] = useState([]);
@@ -9,19 +10,14 @@ function MatchListPage() {
 
   useEffect(() => {
     const fetchMatches = async () => {
-      try {
-        const response = await fetch('http://192.168.0.12:8080/api/v1/matches');
-        if (!response.ok) {
-          throw new Error('네트워크 에러 확인하기.');
-        }
-        const data = await response.json();
+      setLoading(true);
+      const data = await getMatchList();
+      if (data) {
         setMatches(data);
-        setLoading(false);
-      } catch (error) {
-        console.error('Failed to fetch matches:', error);
-        setError(error);
-        setLoading(false);
+      } else {
+        setError('Failed to fetch matches');
       }
+      setLoading(false);
     };
     fetchMatches();
   }, []);
