@@ -76,7 +76,7 @@ const Login = () => {
   const exchangeCodeForToken = useCallback(async (code) => {
     try {
       // GET 요청으로 인가 코드를 백엔드에 전달
-      const response = await fetch(`http://localhost:8080/api/auth/kakao/login?code=${code}`, {
+      const response = await fetch(`http://192.168.0.12:8080/api/auth/kakao/login?code=${code}`, {
         method: 'GET',
         credentials: 'include'  // 쿠키 포함해서 요청
       });
@@ -111,7 +111,7 @@ const Login = () => {
 
    // 카카오 로그인 버튼 클릭 시 인증 요청
   const handleKakaoLogin = () => {
-    window.location.href = 'https://kauth.kakao.com/oauth/authorize?response_type=code&client_id=262c56061ee06d4004d2f9b94db133a4&redirect_uri=http://localhost:3000/login';  // 클라이언트로 리다이렉트 설정
+    window.location.href = 'https://kauth.kakao.com/oauth/authorize?response_type=code&client_id=262c56061ee06d4004d2f9b94db133a4&redirect_uri=http://192.168.0.12:3000/login';  // 클라이언트로 리다이렉트 설정
   };
   
   if (isLoading) {

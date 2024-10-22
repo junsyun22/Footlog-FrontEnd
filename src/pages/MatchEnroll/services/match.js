@@ -1,4 +1,4 @@
-const SERVER_URL = 'http://localhost:8080';
+const SERVER_URL = 'http://192.168.0.12:8080';
 
 export async function postMatchEnroll(data) {
   const MATCH_ENDPOINT = '/api/v1/matches';
@@ -51,7 +51,7 @@ export async function getMatcheDetail(matchId) {
 export async function applyForMatch(matchId, enemyClubId) {
   try {
     const response = await fetch(
-      `http://localhost:8080/api/v1/matches/${matchId}/application?enemyClubId=${enemyClubId}`,
+      `http://192.168.0.12:8080/api/v1/matches/${matchId}/application?enemyClubId=${enemyClubId}`,
       {
         method: 'POST',
         headers: {

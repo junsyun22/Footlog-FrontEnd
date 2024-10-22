@@ -58,15 +58,15 @@ function ClubEdit() {
             const response = await api.get(`/api/clubs/${clubId}`);
             const data = response.data;
             setClub(data);  // Zustand 상태에 저장
-            setClubName(data.clubName);
-            setClubIntroduction(data.clubIntroduction);
-            setClubCode(data.clubCode);
-            setSelectedDays(data.days);
-            setSelectedTimes(data.times);
-            setSelectedLevel(data.clubLevel);
-            setStadiumName(data.stadiumName);
-            setSelectedCity(data.city);
-            setSelectedRegion(data.region);
+            setClubName(data.club.clubName);
+            setClubIntroduction(data.club.clubIntroduction);
+            setClubCode(data.club.clubCode);
+            setSelectedDays(data.club.days);
+            setSelectedTimes(data.club.times);
+            setSelectedLevel(data.club.clubLevel);
+            setStadiumName(data.club.stadiumName);
+            setSelectedCity(data.club.city);
+            setSelectedRegion(data.club.region);
             setLoading(false);
         } catch (error) {
             console.error(error);

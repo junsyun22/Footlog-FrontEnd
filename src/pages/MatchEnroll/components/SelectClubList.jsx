@@ -7,7 +7,7 @@ function SelectClubList({ onSelect }) {
     const getClubList = async () => {
       try {
         const response = await fetch(
-          'http://localhost:8080/api/clubs/my-clubs',
+          'http://192.168.0.12:8080/api/clubs/my-clubs',
           {
             method: 'GET',
             headers: {

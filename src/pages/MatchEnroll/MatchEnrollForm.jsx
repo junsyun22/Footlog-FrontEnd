@@ -81,7 +81,7 @@ function MatchEnrollForm() {
 
   useEffect(() => {
     const getClubList = async () => {
-      const response = await fetch('http://localhost:8080/api/clubs/my-clubs', {
+      const response = await fetch('http://192.168.0.12:8080/api/clubs/my-clubs', {
         method: 'GET',
         headers: {
           'Content-Type': 'application/json',
@@ -118,7 +118,7 @@ function MatchEnrollForm() {
   const onSubmit = async (data) => {
     try {
       const requestData = {
-        myClubId: 1,
+        myClubId: data.myClub,
         matchPhoto: '',
         matchIntroduce: data.matchIntroduce,
         matchDate: data.matchDate,

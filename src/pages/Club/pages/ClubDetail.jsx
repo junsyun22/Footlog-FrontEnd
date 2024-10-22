@@ -47,6 +47,7 @@ function ClubDetail() {
     setError(null);
     try {
       const { data } = await api.get(`/api/clubs/${clubId}`);
+      console.log("받아온 클럽 데이터:", data);  // 데이터 로깅
       setClub(data);
 
       // 구단원 여부 확인
@@ -158,14 +159,14 @@ function ClubDetail() {
       <p className={styles['club-introduction']}><strong>구단 소개:</strong> {club?.clubIntroduction}</p>
 
       <div className={styles['club-info']}>
-        <p><strong>구단 코드:</strong> {club?.clubCode || '정보 없음'}</p>
-        <p><strong>등록일:</strong> {club?.createdAt ? formatDate(club.createdAt) : '정보 없음'}</p>
-        <p><strong>주 활동구장:</strong> {club?.stadiumName || '정보 없음'}</p>
-        <p><strong>도시:</strong> {club?.city || '정보 없음'}</p>
-        <p><strong>지역:</strong> {club?.region || '정보 없음'}</p>
-        <p><strong>활동 요일:</strong> {club?.days?.length ? club.days.join(', ') : '정보 없음'}</p>
-        <p><strong>활동 시간대:</strong> {club?.times?.length ? club.times.join(', ') : '정보 없음'}</p>
-        <p><strong>실력:</strong> {reverseLevelMap[club?.clubLevel] || '정보 없음'}</p>
+        <p><strong>구단 코드:</strong> {club?.club.clubCode || '정보 없음'}</p>
+        <p><strong>등록일:</strong> {club?.club.createdAt ? formatDate(club.club.createdAt) : '정보 없음'}</p>
+        <p><strong>주 활동구장:</strong> {club?.club.stadiumName || '정보 없음'}</p>
+        <p><strong>도시:</strong> {club?.club.city || '정보 없음'}</p>
+        <p><strong>지역:</strong> {club?.club.region || '정보 없음'}</p>
+        <p><strong>활동 요일:</strong> {club?.club.days?.length ? club.club.days.join(', ') : '정보 없음'}</p>
+        <p><strong>활동 시간대:</strong> {club?.club.times?.length ? club.club.times.join(', ') : '정보 없음'}</p>
+        <p><strong>실력:</strong> {reverseLevelMap[club?.club.clubLevel] || '정보 없음'}</p>
       </div>
 
       <div className={styles['club-actions']}>

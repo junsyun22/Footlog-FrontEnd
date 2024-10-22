@@ -10,7 +10,7 @@ function MatchListPage() {
   useEffect(() => {
     const fetchMatches = async () => {
       try {
-        const response = await fetch('http://localhost:8080/api/v1/matches');
+        const response = await fetch('http://192.168.0.12:8080/api/v1/matches');
         if (!response.ok) {
           throw new Error('네트워크 에러 확인하기.');
         }
