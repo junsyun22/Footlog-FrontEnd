@@ -1,0 +1,110 @@
+/* 전체 컨테이너 설정 */
+.container {
+  width: 100%;
+  max-width: 1200px; /* 최대 너비 확대 */
+  margin: 0 auto;
+  padding: 20px;
+  background-color: #f4f4f4;
+  box-sizing: border-box;
+  display: flex;
+  justify-content: center; /* 중앙 정렬 */
+  align-items: center;
+  height: 100vh; /* 화면 전체 높이 */
+}
+
+/* 문의 세부 내용 카드 */
+.inquiryDetails {
+  background-color: #fff;
+  padding: 30px; /* 패딩을 더 넓게 */
+  border-radius: 10px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  display: flex;
+  flex-direction: column;
+  gap: 20px; /* 요소 사이 간격 확대 */
+  width: 100%; /* 너비 100% */
+  max-width: 900px; /* 카드의 최대 너비 확대 */
+  box-sizing: border-box;
+}
+
+/* 제목 */
+.title {
+  font-size: 32px; /* 제목 크기 확대 */
+  color: #333;
+  margin-bottom: 20px;
+  font-weight: bold;
+  border-bottom: 2px solid #ddd;
+  padding-bottom: 10px;
+  text-align: center; /* 제목 중앙 정렬 */
+}
+
+/* 세부 항목 섹션 */
+.detailSection {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 10px;
+  width: 100%; /* 너비 100% */
+}
+
+/* 라벨 (문의자, 날짜 등) */
+.label {
+  font-size: 18px; /* 라벨 크기 확대 */
+  font-weight: bold;
+  color: #555;
+  width: 25%; /* 라벨의 최소 너비 설정 */
+}
+
+/* 값 (실제 데이터) */
+.value {
+  font-size: 18px; /* 값 크기 확대 */
+  color: #333;
+  width: 70%; /* 값의 너비를 늘려 글씨가 잘리지 않게 */
+  word-wrap: break-word; /* 긴 단어가 있을 경우 줄바꿈 처리 */
+}
+
+/* 문의 내용 (메시지) */
+.message {
+  font-size: 18px; /* 메시지 폰트 크기 확대 */
+  color: #333;
+  line-height: 1.6;
+  white-space: pre-line;
+  margin-top: 10px;
+  word-wrap: break-word;
+}
+
+/* 관리자 답변 */
+.response {
+  font-size: 18px; /* 답변 폰트 크기 확대 */
+  color: #28a745;
+  line-height: 1.6;
+  white-space: pre-line;
+  margin-top: 10px;
+  border-left: 4px solid #28a745;
+  padding-left: 10px;
+  word-wrap: break-word;
+}
+
+/* 상태 섹션 (답변 상태) */
+.statusSection {
+  text-align: right;
+  margin-top: 20px;
+}
+
+/* 상태 텍스트 */
+.status {
+  font-size: 18px; /* 상태 텍스트 폰트 크기 확대 */
+  font-weight: bold;
+  padding: 10px;
+  border-radius: 5px;
+}
+
+/* 답변 완료 상태 */
+.answered {
+  color: #28a745;
+  background-color: #e6f9e6;
+}
+
+/* 답변 대기 상태 */
+.notAnswered {
+  color: #dc3545;
+  background-color: #fdeaea;
+}

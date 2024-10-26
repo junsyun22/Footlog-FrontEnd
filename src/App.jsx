@@ -39,6 +39,13 @@ import Profile from './pages/Profile/Profile';
 import EnrollMercenaryApp from './pages/Mercenary/pages/EnrollMercenaryApp/EnrollMercenaryApp';
 import EnrollMercenaryRec from './pages/Mercenary/pages/EnrollMercenaryRec/EnrollMercenaryRec';
 
+// AskPage related components
+import AskRegist from './pages/Ask/AskRegist';
+import AskPage from './pages/Ask/AskPage';
+import AskAnswerPage from './pages/Ask/AskAnswerPage';
+import MyAskPage from './pages/Ask/MyAskPage';
+import AskDetailPage from './pages/Ask/AskDetailPage';
+
 const App = () => {
   return (
     <ThemeProvider theme={theme}>
@@ -81,6 +88,12 @@ const App = () => {
             <Route exact path="/club/regist/success" element={<RegistrationSuccess />} />
             <Route exact path="/club/detail/:clubId" element={<ClubDetail />} />
             <Route exact path="/clubs/edit/:clubId" element={<ClubEdit />} />
+
+            <Route path="/ask/regist" element={<AskRegist />} />
+            <Route path="/ask" element={<AskPage />} />
+            <Route path='/ask/mypage/:userId' element={<MyAskPage />} />
+            <Route path='/ask/:id' element={<AskDetailPage />} />
+            <Route path='/ask/answer/:id' element={<AskAnswerPage />} />
 
 
 
