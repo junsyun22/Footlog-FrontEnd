@@ -1,4 +1,4 @@
-const SERVER_URL = 'http://192.168.0.12:8080';
+const SERVER_URL = 'http://localhost:8080';
 
 export async function postMatchEnroll(data) {
   const MATCH_ENDPOINT = '/api/v1/matches';
@@ -22,6 +22,27 @@ export async function postMatchEnroll(data) {
     return result;
   } catch (error) {
     console.error(error);
+  }
+}
+
+export async function getMatchList() {
+  const url = SERVER_URL.concat(`/api/v1/matches`);
+  try {
+    const response = await fetch(url, {
+      method: 'GET',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      credentials: 'include',
+    });
+    if (!response.ok) {
+      throw new Error(`Server error: ${response.status}`);
+    }
+    const result = await response.json();
+    return result;
+  } catch (error) {
+    console.error('Failed to fetch matches:', error);
+    return null;
   }
 }
 
@@ -49,18 +70,18 @@ export async function getMatcheDetail(matchId) {
 }
 
 export async function applyForMatch(matchId, enemyClubId) {
+  const ENDPOINT = `/api/v1/matches/${matchId}/application?enemyClubId=${enemyClubId}`;
+  const url = SERVER_URL.concat(ENDPOINT);
+
   try {
-    const response = await fetch(
-      `http://192.168.0.12:8080/api/v1/matches/${matchId}/application?enemyClubId=${enemyClubId}`,
-      {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-          Authorization: `Bearer ${localStorage.getItem('accessToken')}`,
-        },
-        credentials: 'include',
-      }
-    );
+    const response = await fetch(url, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        Authorization: `Bearer ${localStorage.getItem('accessToken')}`,
+      },
+      credentials: 'include',
+    });
 
     if (!response.ok) {
       throw new Error(`Error: ${response.status}`);
@@ -83,9 +104,9 @@ export async function acceptMatch(matchId) {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
-        Authorization: `Bearer ${localStorage.getItem('accessToken')}`, 
+        Authorization: `Bearer ${localStorage.getItem('accessToken')}`,
       },
-      credentials: 'include', 
+      credentials: 'include',
     });
 
     if (!response.ok) {
@@ -93,7 +114,7 @@ export async function acceptMatch(matchId) {
     }
 
     const result = await response.json();
-    return result; 
+    return result;
   } catch (error) {
     console.error('Failed to accept the match:', error);
     return null;
@@ -109,9 +130,9 @@ export async function rejectMatch(matchId) {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
-        Authorization: `Bearer ${localStorage.getItem('accessToken')}`, 
+        Authorization: `Bearer ${localStorage.getItem('accessToken')}`,
       },
-      credentials: 'include', 
+      credentials: 'include',
     });
 
     if (!response.ok) {
@@ -119,7 +140,7 @@ export async function rejectMatch(matchId) {
     }
 
     const result = await response.json();
-    return result; 
+    return result;
   } catch (error) {
     console.error('Failed to reject the match:', error);
     return null;

@@ -15,7 +15,9 @@ import {
   calculateEndTime,
   convertMatchGender,
   convertPlayerQuantity,
+  validateDateAfterToday,
 } from './utils';
+import { getMyClubList } from './services/club';
 
 const SearchFieldLocation = styled.div`
   display: flex;
@@ -74,31 +76,16 @@ function MatchEnrollForm() {
   const [fieldLocation, setFieldLocation] = useState('');
   const [mapData, setMapData] = useState(null);
   const [searchResults, setSearchResults] = useState([]);
+  const [clubList, setClubList] = useState(null);
 
   const navigate = useNavigate();
 
-  const [clubList, setClubList] = useState(null);
-
   useEffect(() => {
-    const getClubList = async () => {
-      const response = await fetch('http://192.168.0.12:8080/api/clubs/my-clubs', {
-        method: 'GET',
-        headers: {
-          'Content-Type': 'application/json',
-          Authorization: `Bearer ${localStorage.getItem('accessToken')}`,
-        },
-        credentials: 'include',
-      });
-
-      if (!response.ok) {
-        throw new Error('안돼 ! 요청 잘못보냄');
-      }
-
-      const result = await response.json();
-
+    const fetchMyClubList = async () => {
+      const result = await getMyClubList();
       setClubList(result);
     };
-    getClubList();
+    fetchMyClubList();
   }, []);
 
   const {
@@ -107,15 +94,8 @@ function MatchEnrollForm() {
     formState: { errors },
   } = useForm({ mode: 'onChange' });
 
-  const validateDate = (day) => {
-    const selectedDate = new Date(day);
-    const today = new Date();
-    selectedDate.setHours(0, 0, 0, 0);
-    today.setHours(0, 0, 0, 0);
-    return selectedDate > today || '등록일은 오늘 이후여야 합니다.';
-  };
-
   const onSubmit = async (data) => {
+    console.log(data);
     try {
       const requestData = {
         myClubId: data.myClub,
@@ -204,7 +184,7 @@ function MatchEnrollForm() {
           type="date"
           register={register('matchDate', {
             required: 'Date is required',
-            validate: validateDate,
+            validate: validateDateAfterToday,
           })}
           error={errors.matchDate?.message}
         />

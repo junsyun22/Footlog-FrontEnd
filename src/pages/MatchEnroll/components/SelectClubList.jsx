@@ -1,35 +1,15 @@
 import { useEffect, useState } from 'react';
+import { getMyClubList } from '../services/club';
 
 function SelectClubList({ onSelect }) {
   const [clubList, setClubList] = useState(null);
 
   useEffect(() => {
-    const getClubList = async () => {
-      try {
-        const response = await fetch(
-          'http://192.168.0.12:8080/api/clubs/my-clubs',
-          {
-            method: 'GET',
-            headers: {
-              'Content-Type': 'application/json',
-              Authorization: `Bearer ${localStorage.getItem('accessToken')}`,
-            },
-            credentials: 'include',
-          }
-        );
-
-        if (!response.ok) {
-          throw new Error('요청 실패');
-        }
-
-        const result = await response.json();
-        setClubList(result);
-      } catch (error) {
-        console.error('클럽 목록을 가져오는 중 에러 발생:', error);
-      }
+    const fetchMyClubList = async () => {
+      const result = await getMyClubList();
+      setClubList(result);
     };
-
-    getClubList();
+    fetchMyClubList();
   }, []);
 
   const handleClubSelect = (e) => {
