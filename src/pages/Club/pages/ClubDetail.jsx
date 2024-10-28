@@ -76,20 +76,18 @@ function ClubDetail() {
     }
   };
 
-  // 구단 가입 핸들러
-  const handleJoinClub = async () => {
-    try {
-      const { status } = await api.post(`/api/club-members/${clubId}/join`);
-      if (status === 200) {
-        alert('구단 가입이 완료되었습니다.');
-        setIsMember(true);
-        fetchClubDetail();
-      }
-    } catch (error) {
-      console.error('구단 가입 중 오류:', error);
-      alert(`구단 가입에 실패했습니다. 사유: ${error.response?.data?.message || '오류 발생'}`);
+// 구단 가입요청 핸들러
+const handleJoinClub = async () => {
+  try {
+    const { status, data } = await api.post(`/api/club-members/${clubId}/join`);
+    if (status === 200) {
+      alert('구단 가입 요청이 완료되었습니다. 구단주의 승인을 기다려주세요.');
     }
-  };
+  } catch (error) {
+    console.error('구단 가입 요청 중 오류:', error);
+    alert(`구단 가입 요청에 실패했습니다. 사유: ${error.response?.data?.message || '서버에서 문제가 발생했습니다. 나중에 다시 시도해주세요.'}`);
+  }
+};
 
   // 구단 탈퇴 핸들러
   const handleLeaveClub = async () => {
@@ -176,6 +174,7 @@ function ClubDetail() {
           <>
             <button className={styles['edit-btn']} onClick={handleEdit}>수정</button>
             <button className={styles['delete-btn']} onClick={handleDelete}>삭제</button>
+            <button className={styles['members-btn']} onClick={() => navigate(`/club/${clubId}/members`)}>구단원 관리</button>
           </>
         )}
         <button className={styles['back-btn']} onClick={() => navigate(`/clublist`)}>뒤로 가기</button>
