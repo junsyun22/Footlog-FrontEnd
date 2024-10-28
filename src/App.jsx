@@ -28,6 +28,7 @@ import RegistClubLevel from './pages/Club/pages/RegistClubLevel';
 import RegistrationSuccess from './pages/Club/pages/RegistSuccess';
 import ClubDetail from './pages/Club/pages/ClubDetail';
 import ClubEdit from './pages/Club/pages/ClubEdit';
+import ClubMembers from './pages/Club/pages/ClubMembers';
 
 
 // Mercenary related components
@@ -88,7 +89,8 @@ const App = () => {
             <Route exact path="/club/regist/success" element={<RegistrationSuccess />} />
             <Route exact path="/club/detail/:clubId" element={<ClubDetail />} />
             <Route exact path="/clubs/edit/:clubId" element={<ClubEdit />} />
-
+            <Route exact path="/club/:clubId/members" element={<ClubMembers />} />
+            
             <Route path="/ask/regist" element={<AskRegist />} />
             <Route path="/ask" element={<AskPage />} />
             <Route path='/ask/mypage/:userId' element={<MyAskPage />} />
