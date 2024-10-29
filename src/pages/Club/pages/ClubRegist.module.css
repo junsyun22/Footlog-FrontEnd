@@ -89,39 +89,32 @@ input:focus {
 
 .club-actions {
     display: flex;
-    justify-content: space-between;
+    flex-wrap: wrap;
+    justify-content: center;  /* 버튼들을 중앙 정렬 */
+    gap: 15px;  /* 버튼 사이의 간격 통일 */
+    margin-top: 20px;
+    width: 100%;
 }
 
-.edit-btn, .delete-btn, .join-btn, .leave-btn, .back-btn{
-    margin-top: 30px;
-    padding: 10px 50px;
+.edit-btn, .delete-btn, .join-btn, .leave-btn, .back-btn, .members-btn {
+    width: 120px;  /* 모든 버튼의 너비를 고정 */
+    height: 40px;  /* 모든 버튼의 높이를 고정 */
+    padding: 0;    /* 패딩 제거로 크기 통일 */
     border: none;
-    border-radius: 5px;
+    border-radius: 30px;  /* 모든 버튼의 모서리를 동일하게 설정 */
     font-size: 1em;
     cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
 }
 
-.edit-btn {
+.edit-btn, .members-btn, .join-btn, .back-btn {
     background-color:  rgb(92, 196, 157);
     color: white;
 }
 
-.delete-btn {
+.delete-btn, .leave-btn {
     background-color: #f44336;
-    color: white;
-}
-
-.join-btn {
-    background-color:  rgb(92, 196, 157);
-    color: white;
-}
-
-.leave-btn{
-    background-color: #f44336;
-    color: white;
-}
-
-.back-btn{
-    background-color:  rgb(92, 196, 157);
     color: white;
 }

@@ -55,7 +55,7 @@ const useClubStore = create((set) => ({
   // 서버에서 클럽 정보를 가져오는 함수
   fetchClub: async (clubId) => {
       try {
-          const response = await fetch(`http://192.168.0.12:8080/api/clubs/${clubId}`);
+          const response = await fetch(`http://localhost:8080/api/clubs/${clubId}`);
           const data = await response.json();
           set({ club: data }); // 클럽 데이터 저장
       } catch (error) {
