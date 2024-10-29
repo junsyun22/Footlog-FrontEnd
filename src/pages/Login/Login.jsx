@@ -76,7 +76,7 @@ const Login = () => {
   const exchangeCodeForToken = useCallback(async (code) => {
     try {
       // GET 요청으로 인가 코드를 백엔드에 전달
-      const response = await fetch(`http://192.168.0.35:8081/api/auth/kakao/login?code=${code}`, {
+      const response = await fetch(`http://localhost:8080/api/auth/kakao/login?code=${code}`, {
         method: 'GET',
         credentials: 'include'  // 쿠키 포함해서 요청
       });
